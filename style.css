@@ -75,3 +75,142 @@ footer a {
   background-color: #e0e7ff;
   transform: scale(1.1);
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2563eb, white);
+}
+
+.login box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.login box h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #1e40af;
+}
+
+.login box p {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.login box label {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.login box input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 18px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: default;
+}
+
+.footer-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #333;
+}
+.signup-container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 360px;
+  padding: 40px;
+}
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #182848;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: #4b6cb7;
+}
+.btn {
+  width: 100%;
+  background-color: #4b6cb7;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn:hover {
+  background-color: #182848;
+}
+.footer-text {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+.footer-text a {
+  color: #4b6cb7;
+  text-decoration: none;
+}
+.footer-text a:hover {
+  text-decoration: underline;
+}

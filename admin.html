@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin Dashboard</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+      }
+
+      .header {
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .container {
+        width: 420px;
+        margin: 80px auto;
+        background: white;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .container p {
+        color: #555;
+        font-size: 16px;
+        margin: 8px 0;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 25px;
+      }
+
+      li {
+        margin: 15px 0;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        background: #3498db;
+        color: white;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      a:hover {
+        background: #2980b9;
+        transform: scale(1.03);
+      }
+
+      .logout {
+        background: #e74c3c;
+      }
+
+      .logout:hover {
+        background: #c0392b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">Admin Dashboard</div>
+
+    <div class="container">
+      <p><b>Welcome Admin</b></p>
+      <p>Use the menu to manage system data</p>
+
+      <ul>
+        <li><a href="manage-user.html">Manage Users</a></li>
+        <li><a href="add-user.html">Add User</a></li>
+        <li><a href="login.html" class="logout">Logout</a></li>
+      </ul>
+    </div>
+
+    <script>
+      let role = localStorage.getItem("userRole");
+
+      if (role !== "admin") {
+        alert("Access denied. Admins only.");
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>

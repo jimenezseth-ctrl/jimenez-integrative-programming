@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Add User</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+      }
+
+      .header {
+        background: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-size: 26px;
+        font-weight: bold;
+      }
+
+      .container {
+        width: 400px;
+        margin: 60px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+      }
+
+      label {
+        font-weight: 600;
+        color: #444;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      button {
+        width: 100%;
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        background: #2980b9;
+        transform: scale(1.03);
+      }
+
+      #message {
+        margin-top: 15px;
+        text-align: center;
+        color: #27ae60;
+        font-weight: 600;
+      }
+
+      .back {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        background: #2c3e50;
+        color: white;
+        padding: 10px;
+        border-radius: 6px;
+      }
+
+      .back:hover {
+        background: #1a252f;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">Admin Panel</div>
+
+    <div class="container">
+      <h2>Add User</h2>
+
+      <label>Name</label>
+      <input type="text" id="name" />
+
+      <label>Email</label>
+      <input type="email" id="email" />
+
+      <label>Role</label>
+      <select id="role">
+        <option>User</option>
+        <option>Admin</option>
+      </select>
+
+      <button onclick="addUser()">Add User</button>
+
+      <p id="message"></p>
+
+      <a href="admin.html" class="back">Back to Dashboard</a>
+    </div>
+
+    <script>
+      let role = localStorage.getItem("userRole");
+
+      if (role !== "admin") {
+        alert("Access denied.");
+        window.location.href = "login.html";
+      }
+
+      function addUser() {
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let role = document.getElementById("role").value;
+
+        document.getElementById("message").innerHTML =
+          "User Added: " + name + " (" + role + ")";
+      }
+    </script>
+  </body>
+</html>

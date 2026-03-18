@@ -74,14 +74,32 @@
         margin-top: 1rem;
         padding: 0.7rem;
       }
+      .success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #a7f3d0;
+        border-radius: 8px;
+        padding: 0.7rem;
+        margin-top: 0.7rem;
+      }
+      .top-links {
+        margin-bottom: 0.8rem;
+      }
+      .top-links a {
+        color: #0f4a75;
+        font-weight: 700;
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
     <div class="wrapper">
+      <div class="top-links">
+        <a href="saved.html">SAVED ITEMS</a>
+      </div>
       <h1>Weather Identifier</h1>
       <p class="subtitle">
-        You can enter the city name, province, or country to get the current
-        weather information. Try it out!
+        You can enter city name, province, or country to get current weather.
       </p>
 
       <div class="card">
@@ -90,8 +108,10 @@
           <input id="city-input" type="text" placeholder="e.g., Manila" />
         </div>
         <button id="search-btn">Search</button>
+        <button id="save-btn" style="display: none">Save</button>
       </div>
 
+      <div id="message"></div>
       <div id="output"></div>
     </div>
 
@@ -99,9 +119,34 @@
       const cityInput = document.getElementById("city-input");
       const output = document.getElementById("output");
       const searchBtn = document.getElementById("search-btn");
+      const saveBtn = document.getElementById("save-btn");
+      const messageDiv = document.getElementById("message");
+
+      let currentWeather = null; // store last fetched data for Save
+
+      const getSavedWeather = () => {
+        const raw = localStorage.getItem("savedWeather");
+        if (!raw) return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      };
+
+      const setSavedWeather = (data) => {
+        localStorage.setItem("savedWeather", JSON.stringify(data));
+      };
+
+      const showMessage = (text, type = "success") => {
+        messageDiv.innerHTML = `<div class="${type}">${text}</div>`;
+        setTimeout(() => (messageDiv.innerHTML = ""), 2500);
+      };
 
       const renderError = (msg) => {
         output.innerHTML = '<div class="error">' + msg + "</div>";
+        saveBtn.style.display = "none";
       };
 
       const renderWeather = (city, data) => {
@@ -116,6 +161,16 @@
             <div class="row"><strong>Time:</strong> ${w.time}</div>
           </div>
         `;
+        currentWeather = {
+          city,
+          timezone: data.timezone,
+          temperature: w.temperature,
+          windspeed: w.windspeed,
+          winddirection: w.winddirection,
+          weathercode: w.weathercode,
+          time: w.time,
+        };
+        saveBtn.style.display = "inline-block";
       };
 
       const fetchWeather = async () => {
@@ -126,6 +181,10 @@
         }
 
         output.innerHTML = "Loading...";
+        messageDiv.innerHTML = "";
+        saveBtn.style.display = "none";
+        currentWeather = null;
+
         try {
           const geoRes = await fetch(
             `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
@@ -150,10 +209,32 @@
         }
       };
 
+      const saveCurrentWeather = () => {
+        if (!currentWeather) {
+          showMessage("No weather data to save", "error");
+          return;
+        }
+
+        const existing = getSavedWeather();
+        const isDuplicate = existing.some(
+          (item) =>
+            item.city === currentWeather.city &&
+            item.time === currentWeather.time,
+        );
+        if (isDuplicate) {
+          showMessage("Already saved.", "error");
+          return;
+        }
+        existing.push(currentWeather);
+        setSavedWeather(existing);
+        showMessage("Saved successfully!");
+      };
+
       searchBtn.addEventListener("click", fetchWeather);
       cityInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") fetchWeather();
       });
+      saveBtn.addEventListener("click", saveCurrentWeather);
     </script>
   </body>
 </html>

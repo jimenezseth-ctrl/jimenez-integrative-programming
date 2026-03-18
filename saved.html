@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saved Weather Collection</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #83eaf1, #63a4ff);
+        color: #1a2733;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .wrapper {
+        width: min(760px, 94vw);
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 18px;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+        padding: 1.4rem;
+      }
+      h1 {
+        margin-top: 0;
+        color: #0f4a75;
+      }
+      .item-card {
+        border: 1px solid #c6e0f5;
+        border-radius: 10px;
+        padding: 0.9rem;
+        margin: 0.7rem 0;
+        background: #fff;
+      }
+      .row {
+        margin: 0.3rem 0;
+      }
+      button {
+        margin-top: 0.6rem;
+        border: none;
+        border-radius: 8px;
+        padding: 0.45rem 0.9rem;
+        background: #e66868;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #c03f3f;
+      }
+      .empty {
+        color: #345b73;
+        padding: 1rem;
+        background: #eaf6ff;
+        border-radius: 8px;
+      }
+      .top-links {
+        margin-bottom: 0.8rem;
+      }
+      .top-links a {
+        color: #0f4a75;
+        font-weight: 700;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="top-links">
+        <a href="API.html">SEARCH WEATHER TEMPERATURE</a>
+      </div>
+      <h1>Saved Weather Collection in Every Place</h1>
+      <div id="saved-list"></div>
+    </div>
+
+    <script>
+      const savedList = document.getElementById("saved-list");
+
+      const getSavedWeather = () => {
+        const raw = localStorage.getItem("savedWeather");
+        if (!raw) return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      };
+
+      const setSavedWeather = (items) => {
+        localStorage.setItem("savedWeather", JSON.stringify(items));
+      };
+
+      const renderSaved = () => {
+        const items = getSavedWeather();
+        if (items.length === 0) {
+          savedList.innerHTML = '<div class="empty">No saved items yet.</div>';
+          return;
+        }
+
+        const html = items
+          .map(
+            (item, index) => `
+          <div class="item-card">
+            <div class="row"><strong>City:</strong> ${item.city}</div>
+            <div class="row"><strong>Temperature:</strong> ${item.temperature}°C</div>
+            <div class="row"><strong>Timezone:</strong> ${item.timezone}</div>
+            <div class="row"><strong>Time:</strong> ${item.time}</div>
+            <div class="row"><strong>Wind Speed:</strong> ${item.windspeed} km/h</div>
+            <div class="row"><strong>Wind Direction:</strong> ${item.winddirection}°</div>
+            <button onclick="removeSaved(${index})">Remove</button>
+          </div>
+        `,
+          )
+          .join("");
+        savedList.innerHTML = html;
+      };
+
+      window.removeSaved = (index) => {
+        const items = getSavedWeather();
+        if (index < 0 || index >= items.length) return;
+        items.splice(index, 1);
+        setSavedWeather(items);
+        renderSaved();
+      };
+
+      renderSaved();
+    </script>
+  </body>
+</html>

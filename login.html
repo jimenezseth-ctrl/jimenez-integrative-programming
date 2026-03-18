@@ -3,47 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div class="login box">
-      <h1>Welcome to AI Schedule Maker</h1>
-      <h2>Login</h2>
-      <form onsubmit="login(event)">
-  <div class="input-group">
-    <input type="text" id="email" required />
-    <span>Email</span>
-  </div>
+    <title>Login</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
 
-  <div class="input-group">
-    <input type="password" id="password" required />
-    <span>Password</span>
-  </div>
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #2563eb, #ffffff);
+        color: #1f2937;
+      }
 
-  <div class="links">
-    <a href="#">Forgot Password</a>
-    <a href="signup.html">Sign Up</a>
-    <a href="index.html">Log out</a>
-  </div>
+      .login.box {
+        background-color: #ffffff;
+        padding: 40px 30px;
+        width: 100%;
+        max-width: 380px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
 
-  <button type="submit" class="login-button">Login</button>
-</form>
+      .login.box h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #1e40af;
+        font-size: 1.3rem;
+      }
+
+      .login.box h2 {
+        text-align: center;
+        margin-bottom: 18px;
+        color: #334155;
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 18px;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+      }
+
+      .input-group span {
+        position: absolute;
+        left: 10px;
+        top: -10px;
+        background: #fff;
+        font-size: 0.8rem;
+        color: #6b7280;
+        padding: 0 4px;
+      }
+
+      .links {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        font-size: 0.9rem;
+      }
+
+      .links a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+
+      .links a:hover {
+        text-decoration: underline;
+      }
+
+      .login-button {
+        width: 100%;
+        padding: 12px;
+        background-color: #2563eb;
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .login-button:hover {
+        background-color: #1d4ed8;
+      }
+    </style>
     <script>
       function login(event) {
-        event.preventDefault(); // stop page refresh
-
+        event.preventDefault();
         let email = document.getElementById("email").value;
-
         let role = "user";
-
-        if (email === "admin@email.com") {
-          role = "admin";
-        }
-
+        if (email === "admin@email.com") role = "admin";
         localStorage.setItem("userRole", role);
-
         if (role === "admin") {
           window.location.href = "admin.html";
         } else {
@@ -51,5 +110,27 @@
         }
       }
     </script>
+  </head>
+  <body>
+    <div class="login box">
+      <h1>Welcome to AI Schedule Maker</h1>
+      <h2>Login</h2>
+      <form onsubmit="login(event)">
+        <div class="input-group">
+          <input type="text" id="email" required />
+          <span>Email</span>
+        </div>
+        <div class="input-group">
+          <input type="password" id="password" required />
+          <span>Password</span>
+        </div>
+        <div class="links">
+          <a href="#">Forgot Password</a>
+          <a href="signup.html">Sign Up</a>
+          <a href="index.html">Log out</a>
+        </div>
+        <button type="submit" class="login-button">Login</button>
+      </form>
+    </div>
   </body>
 </html>

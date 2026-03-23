@@ -3,8 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Weather Home</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80")
+          no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+      }
+      .navbar {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+      }
+      .navbar li {
+        float: left;
+      }
+      .navbar a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      .navbar a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .hero {
+        text-align: center;
+        padding: 100px 20px;
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .hero h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+      }
+      .hero p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+      }
+      .cta-button {
+        background: #ff6b35;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        display: inline-block;
+      }
+      .cta-button:hover {
+        background: #e55a2b;
+      }
+      .content {
+        padding: 50px 20px;
+        background: rgba(255, 255, 255, 0.9);
+        color: black;
+        margin: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .content h2 {
+        color: #333;
+      }
+      .hero-buttons {
+        text-align: center;
+        margin: 20px;
+      }
+      .hero-buttons a {
+        margin: 0 10px;
+        padding: 10px 20px;
+        background: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .hero-buttons a:hover {
+        background: #45a049;
+      }
+      footer {
+        text-align: center;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <ul class="navbar">
@@ -12,25 +100,24 @@
       <li><a href="profile.html">Profile</a></li>
       <li><a href="settings.html">Settings</a></li>
     </ul>
-    >
 
     <section class="hero">
-      <h1>AI Schedule Maker</h1>
+      <h1>Weather Explorer</h1>
       <p>
-        It is powered by Artificial Intelligence to make a automatically
-        organized schedule for your tasks, meetings, subjects and priorities to
-        help you stay productive and motivated.
+        Get live weather quickly for cities worldwide. Powered by Open-Meteo
+        API, no API key needed.
       </p>
-      <span class="cta-button">Get Started</span>
+      <span class="cta-button" onclick="window.location.href = 'API.html'"
+        >Search Weather</span
+      >
     </section>
 
     <section class="content">
-      <h2>About This Schedule Maker</h2>
+      <h2>How It Works</h2>
       <p>
-        This schedule maker is a simple and productive design that helps users
-        to manage their time effectively. By leveraging AI technology, it
-        automatically organizes tasks and priorities, ensuring users stay on
-        track with their goals.
+        Enter a city name on the weather lookup page to find current
+        temperature, wind, and conditions. Save favorites for later in the saved
+        weather page.
       </p>
     </section>
 

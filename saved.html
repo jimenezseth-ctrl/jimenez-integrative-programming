@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saved Weather Collection</title>
+    <title>Saved Weather</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -29,9 +29,44 @@
       .item-card {
         border: 1px solid #c6e0f5;
         border-radius: 10px;
-        padding: 0.9rem;
+        padding: 1rem;
         margin: 0.7rem 0;
         background: #fff;
+      }
+      .dino-name {
+        font-size: 1.3em;
+        color: #0f4a75;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .dino-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        margin: 0.8rem 0;
+      }
+      .info-item {
+        background: #f0f7ff;
+        padding: 0.6rem;
+        border-radius: 6px;
+        border-left: 3px solid #1b96f3;
+      }
+      .info-label {
+        font-weight: 700;
+        color: #0f4a75;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+      .info-value {
+        color: #1a2733;
+        margin-top: 0.2rem;
+      }
+      .dino-description {
+        background: #f9f9f9;
+        padding: 0.8rem;
+        border-radius: 6px;
+        margin: 0.8rem 0;
+        line-height: 1.5;
       }
       .row {
         margin: 0.3rem 0;
@@ -68,9 +103,9 @@
   <body>
     <div class="wrapper">
       <div class="top-links">
-        <a href="API.html">SEARCH WEATHER TEMPERATURE</a>
+        <a href="API.html">WEATHER SEARCH</a>
       </div>
-      <h1>Saved Weather Collection in Every Place</h1>
+      <h1>Saved Weather Records</h1>
       <div id="saved-list"></div>
     </div>
 
@@ -95,24 +130,41 @@
       const renderSaved = () => {
         const items = getSavedWeather();
         if (items.length === 0) {
-          savedList.innerHTML = '<div class="empty">No saved items yet.</div>';
+          savedList.innerHTML =
+            '<div class="empty">No saved weather records yet. Search and save weather from the Weather Search page.</div>';
           return;
         }
 
         const html = items
-          .map(
-            (item, index) => `
+          .map((weather, index) => {
+            return `
           <div class="item-card">
-            <div class="row"><strong>City:</strong> ${item.city}</div>
-            <div class="row"><strong>Temperature:</strong> ${item.temperature}°C</div>
-            <div class="row"><strong>Timezone:</strong> ${item.timezone}</div>
-            <div class="row"><strong>Time:</strong> ${item.time}</div>
-            <div class="row"><strong>Wind Speed:</strong> ${item.windspeed} km/h</div>
-            <div class="row"><strong>Wind Direction:</strong> ${item.winddirection}°</div>
+            <div class="dino-name">${weather.location} (${weather.time})</div>
+            <div class="dino-description">
+              ${weather.description}
+            </div>
+            <div class="dino-info">
+              <div class="info-item">
+                <div class="info-label">Temp (°C)</div>
+                <div class="info-value">${weather.temperature}</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Wind Speed</div>
+                <div class="info-value">${weather.windspeed}</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Wind Direction</div>
+                <div class="info-value">${weather.winddirection}°</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Coordinates</div>
+                <div class="info-value">${weather.latitude}, ${weather.longitude}</div>
+              </div>
+            </div>
             <button onclick="removeSaved(${index})">Remove</button>
           </div>
-        `,
-          )
+        `;
+          })
           .join("");
         savedList.innerHTML = html;
       };

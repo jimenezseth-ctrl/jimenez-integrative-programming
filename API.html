@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App Explorer</title>
+    <title>Weather Lookup</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -90,28 +90,57 @@
         font-weight: 700;
         text-decoration: none;
       }
+      .dino-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1.2rem;
+      }
+      .dino-attribute {
+        background: #f0f7ff;
+        padding: 0.8rem;
+        border-radius: 8px;
+        border-left: 4px solid #1b96f3;
+      }
+      .dino-attribute strong {
+        color: #0f4a75;
+        display: block;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .dino-attribute span {
+        color: #1a2733;
+        font-weight: 600;
+        display: block;
+      }
+      .dino-description {
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        border: 1px solid #e0e0e0;
+        line-height: 1.6;
+      }
     </style>
   </head>
   <body>
     <div class="wrapper">
       <div class="top-links">
-        <a href="saved.html">SAVED ITEMS</a>
+        <a href="saved.html">SAVED WEATHER</a>
       </div>
-      <h1>Weather Identifier</h1>
+      <h1>Weather Lookup</h1>
       <p class="subtitle">
-        You can enter city name, province, or country to get current weather.
+        Search for a city and get the current weather using Open-Meteo API.
       </p>
 
       <div class="card">
         <div class="row">
-          <label for="city-input">City name</label>
-          <input id="city-input" type="text" placeholder="e.g., Manila" />
+          <label for="city-name">City Name</label>
+          <input id="city-name" type="text" placeholder="e.g., Manila" />
         </div>
         <button id="search-btn">Search</button>
         <button id="save-btn" style="display: none">Save</button>
-        <button id="admin-btn" onclick="window.location.href = 'admin.html'">
-          ADMIN
-        </button>
       </div>
 
       <div id="message"></div>
@@ -119,7 +148,7 @@
     </div>
 
     <script>
-      const cityInput = document.getElementById("city-input");
+      const cityInput = document.getElementById("city-name");
       const output = document.getElementById("output");
       const searchBtn = document.getElementById("search-btn");
       const saveBtn = document.getElementById("save-btn");
@@ -152,34 +181,85 @@
         saveBtn.style.display = "none";
       };
 
-      const renderWeather = (city, data) => {
-        const w = data.current_weather;
+      const weatherCodeToText = (code) => {
+        const mapping = {
+          0: "Clear sky",
+          1: "Mainly clear",
+          2: "Partly cloudy",
+          3: "Overcast",
+          45: "Fog",
+          48: "Depositing rime fog",
+          51: "Drizzle: Light",
+          53: "Drizzle: Moderate",
+          55: "Drizzle: Dense",
+          56: "Freezing drizzle: Light",
+          57: "Freezing drizzle: Dense",
+          61: "Rain: Slight",
+          63: "Rain: Moderate",
+          65: "Rain: Heavy",
+          66: "Freezing rain: Light",
+          67: "Freezing rain: Heavy",
+          71: "Snow fall: Slight",
+          73: "Snow fall: Moderate",
+          75: "Snow fall: Heavy",
+          77: "Snow grains",
+          80: "Rain showers: Slight",
+          81: "Rain showers: Moderate",
+          82: "Rain showers: Violent",
+          85: "Snow showers: Slight",
+          86: "Snow showers: Heavy",
+          95: "Thunderstorm: Slight or moderate",
+          96: "Thunderstorm with slight hail",
+          99: "Thunderstorm with heavy hail",
+        };
+        return mapping[code] || "Unknown weather";
+      };
+
+      const renderWeather = (weather) => {
         output.innerHTML = `
           <div class="card">
-            <h2>${city}, ${data.timezone}</h2>
-            <div class="row"><strong>Temperature:</strong> ${w.temperature}°C</div>
-            <div class="row"><strong>Wind speed:</strong> ${w.windspeed} km/h</div>
-            <div class="row"><strong>Wind direction:</strong> ${w.winddirection}°</div>
-            <div class="row"><strong>Weather code:</strong> ${w.weathercode}</div>
-            <div class="row"><strong>Time:</strong> ${w.time}</div>
+            <h2 style="text-align: center; color: #0f4a75; font-size: 2.2em; margin-bottom: 0.5rem;">${weather.location}</h2>
+            <div class="dino-description">
+              ${weather.time}<br />
+              ${weather.description}
+            </div>
+            <div class="dino-grid">
+              <div class="dino-attribute">
+                <strong>Temperature (°C)</strong>
+                <span>${weather.temperature}</span>
+              </div>
+              <div class="dino-attribute">
+                <strong>Wind Speed (km/h)</strong>
+                <span>${weather.windspeed}</span>
+              </div>
+              <div class="dino-attribute">
+                <strong>Wind Direction</strong>
+                <span>${weather.winddirection}°</span>
+              </div>
+              <div class="dino-attribute">
+                <strong>Weather Code</strong>
+                <span>${weather.weathercode}</span>
+              </div>
+              <div class="dino-attribute">
+                <strong>Location</strong>
+                <span>${weather.location}</span>
+              </div>
+              <div class="dino-attribute">
+                <strong>Latitude / Longitude</strong>
+                <span>${weather.latitude}, ${weather.longitude}</span>
+              </div>
+            </div>
           </div>
         `;
-        currentWeather = {
-          city,
-          timezone: data.timezone,
-          temperature: w.temperature,
-          windspeed: w.windspeed,
-          winddirection: w.winddirection,
-          weathercode: w.weathercode,
-          time: w.time,
-        };
+
+        currentWeather = weather;
         saveBtn.style.display = "inline-block";
       };
 
       const fetchWeather = async () => {
         const city = cityInput.value.trim();
         if (!city) {
-          renderError("Please type a city name before searching.");
+          renderError("Please enter a city name.");
           return;
         }
 
@@ -189,24 +269,49 @@
         currentWeather = null;
 
         try {
-          const geoRes = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-              city,
-            )}&count=1`,
+          const geocodeResp = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`,
           );
-          if (!geoRes.ok) throw new Error("Geocoding API request failed");
-          const geoData = await geoRes.json();
-          if (!geoData.results || geoData.results.length === 0) {
-            throw new Error("City not found. Try another name.");
+
+          if (!geocodeResp.ok) {
+            throw new Error("Unable to geocode city. Check network.");
           }
 
-          const { latitude, longitude, name, country } = geoData.results[0];
-          const weatherRes = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`,
+          const geoData = await geocodeResp.json();
+          if (!geoData.results || geoData.results.length === 0) {
+            throw new Error("City not found. Try another query.");
+          }
+
+          const loc = geoData.results[0];
+          const weatherResp = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true&timezone=auto`,
           );
-          if (!weatherRes.ok) throw new Error("Weather API request failed");
-          const weatherData = await weatherRes.json();
-          renderWeather(`${name}, ${country}`, weatherData);
+
+          if (!weatherResp.ok) {
+            throw new Error("Unable to fetch weather data");
+          }
+
+          const weatherData = await weatherResp.json();
+          const cw = weatherData.current_weather;
+          if (!cw) {
+            throw new Error(
+              "No current weather data available for this location.",
+            );
+          }
+
+          const data = {
+            location: `${loc.name}${loc.admin1 ? ", " + loc.admin1 : ""}, ${loc.country}`,
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+            temperature: cw.temperature,
+            windspeed: cw.windspeed,
+            winddirection: cw.winddirection,
+            weathercode: cw.weathercode,
+            time: cw.time,
+            description: weatherCodeToText(cw.weathercode),
+          };
+
+          renderWeather(data);
         } catch (error) {
           renderError("Error: " + error.message);
         }
@@ -214,20 +319,21 @@
 
       const saveCurrentWeather = () => {
         if (!currentWeather) {
-          showMessage("No weather data to save", "error");
+          showMessage("No weather info to save", "error");
           return;
         }
 
         const existing = getSavedWeather();
         const isDuplicate = existing.some(
           (item) =>
-            item.city === currentWeather.city &&
+            item.location === currentWeather.location &&
             item.time === currentWeather.time,
         );
         if (isDuplicate) {
           showMessage("Already saved.", "error");
           return;
         }
+
         existing.push(currentWeather);
         setSavedWeather(existing);
         showMessage("Saved successfully!");
